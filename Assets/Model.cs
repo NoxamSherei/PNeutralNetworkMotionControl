@@ -16,9 +16,9 @@ public class Model : MonoBehaviour {
     public void TestFitnes()
     {
         Color color = MySkin.material.color;
-        color.r = 1 - (fitnes) / 255;
-        color.g = (fitnes) / 255;
-        color.b = (fitnes) / 255;
+        color.r = 1 - (fitnes) / 155;
+        color.g = (fitnes) / 155;
+        color.b = (fitnes) / 155;
         MySkin.material.color= color;
         fitnes++;
         Invoke("TestFitnes", 0.1f);
