@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,7 +39,7 @@ public class GenerationManager : MonoBehaviour {
         UserInterface.PopulationRating.text = "";
         for (int i = 0; i < Population.Length; i++)
         {
-            UserInterface.PopulationRating.text+=Population[i].fitnes+ "\tP" + i + ": " + "\n";
+            UserInterface.PopulationRating.text+=Population[i].fitnes+ "\tP" + i + "M=>"+Population[i].lastMutation + "\n";
         }
         Invoke("Information", 0.1f);
     }
@@ -60,6 +61,24 @@ public class GenerationManager : MonoBehaviour {
         UserInterface.GenerationInformation.text = Generation+"\t:Generation";
         UserInterface.PopulationInformation.text = Size+"\t:Population";
         Invoke("Information",0.1f);
+        Invoke("NexGen",LifeTime);
+    }
+    private void NexGen()
+    {
+        //List<Order> SortedList = objListOrder.OrderBy(o => o.OrderDate).ToList();
+        Model[] Sorted = Population.OrderBy(p => p.fitnes).ToArray();
+        for (int i = 0; i < Sorted.Length; i++)
+        {
+            if(i>(Sorted.Length/2))
+            {
+                Sorted[i].Mutate(Mutation);
+            }else
+            {
+                Sorted[i].lastMutation = 0;
+            }
+            Sorted[i].ResetPostion();
+        }
+        Invoke("NexGen", LifeTime);
     }
 
     public void StopSimulation()

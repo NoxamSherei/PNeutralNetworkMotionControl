@@ -366,7 +366,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 95361255178780096, guid: 09150836d572cd643ace6576f052cf0a,
+        type: 2}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: f1b75d6c1238b404f8cc82c04f7f2ae1, type: 2}
+    - target: {fileID: 114918111670034200, guid: 09150836d572cd643ace6576f052cf0a,
+        type: 2}
+      propertyPath: fitnes
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 95361255178780096, guid: 09150836d572cd643ace6576f052cf0a, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 09150836d572cd643ace6576f052cf0a, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &635139949

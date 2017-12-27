@@ -66,9 +66,9 @@ public class NeutralNetwork : MonoBehaviour {
         return outputs[layers.Length-1];
     }
 
-    public void Mutate(float chance)
+    public int Mutate(float chance)
     {
-
+        int m = 0;
         for (int i = 0; i < inputWeight.Length; i++)
         {
             for (int j = 0; j < inputWeight[i].Length; j++)
@@ -79,10 +79,12 @@ public class NeutralNetwork : MonoBehaviour {
                     if (lotto >= (100 - chance))
                     {
                         inputWeight[i][j][n] = MutateOperation(inputWeight[i][j][n]);
+                        m++;
                     }
                 }
             }
         }
+        return m;
     }
 
     private float MutateOperation(float v)

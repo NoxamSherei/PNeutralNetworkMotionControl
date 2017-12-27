@@ -143,7 +143,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4183377853329878}
-  - component: {fileID: 95361255178780096}
   - component: {fileID: 54482276404450938}
   - component: {fileID: 114918111670034200}
   m_Layer: 0
@@ -500,23 +499,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 1, z: 1}
   m_Center: {x: -1, y: 0, z: 0}
---- !u!95 &95361255178780096
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1437921802153174}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: db61de48bf81c3f4693b5022d5bb9a6e, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114918111670034200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -530,6 +512,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fitnes: 0
   MySkin: {fileID: 137933996299816600}
+  OutputBone:
+  - {fileID: 1451527023875150}
+  - {fileID: 1186374155817840}
+  - {fileID: 1056875314662312}
+  - {fileID: 1486033358958010}
+  InputInformation:
+  - {fileID: 1451527023875150}
+  - {fileID: 1186374155817840}
+  - {fileID: 1056875314662312}
+  - {fileID: 1486033358958010}
+  - {fileID: 1437921802153174}
+  test: 0
 --- !u!137 &137933996299816600
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
