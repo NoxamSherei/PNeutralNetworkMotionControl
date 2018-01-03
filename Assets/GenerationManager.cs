@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,13 +11,15 @@ public class GenerationManager : MonoBehaviour {
     public GameObject PreFabs;
     public Slider MutSlider;
     public Text MutText;
+    public InputField TimeInput;
 
+    [Header("Dane Wejsciowe")]
     public int Size;
     public float Mutation;
     public int LifeTime;
     public Model[] Population;
     public int[] NeuralSchemat= {1,10,10,1};
-
+    
     [Header("Ulozenie")]
     public int Separate;
     public Vector3 Start;
@@ -27,11 +30,16 @@ public class GenerationManager : MonoBehaviour {
     {
         MutText.text = "Mutation: " + Mutation+"%";
         MutSlider.value = Mutation;
+        TimeInput.text = LifeTime.ToString();
     }
     public void MutationChange()
     {
         Mutation=MutSlider.value;
         MutText.text = "Mutation: " + Mutation + "%";
+    }
+    public void TimeChange()
+    {
+        Int32.TryParse(TimeInput.text,out LifeTime);
     }
 
     public void Information()
@@ -39,37 +47,52 @@ public class GenerationManager : MonoBehaviour {
         UserInterface.PopulationRating.text = "";
         for (int i = 0; i < Population.Length; i++)
         {
-            UserInterface.PopulationRating.text+=Population[i].fitnes+ "\tP" + i + "M=>"+Population[i].lastMutation + "\n";
+            if (Population[i].Highlight == null)
+            {
+                UserInterface.PopulationRating.text += Population[i].fitnes.ToString("f1") + "\tP" + i + " LMut:" + Population[i].lastMutation + "\n";
+            }
+            else
+            {
+                UserInterface.PopulationRating.text +=">>>"+ Population[i].fitnes.ToString("f1") + "\tP" + i + " LMut:" + Population[i].lastMutation + "<<<\n";
+            }
         }
-        Invoke("Information", 0.1f);
+        Invoke("Information", 0.01f);
     }
 
     public void StartSimulation()
     {
         Population = new Model[Size];
-        Quaternion zero = new Quaternion(0, 0, 0, 0);
         for (int i = 0; i < Population.Length; i++)
         {
             Vector3 position = Start;
             position.x = i * Separate;
-            GameObject a = Instantiate(PreFabs, position, zero, this.transform.parent);
+            GameObject a = Instantiate(PreFabs, position, PreFabs.transform.rotation, this.transform.parent);
             Model b = a.GetComponent<Model>();
-            b.Creation(NeuralSchemat);
+            b.Creation(NeuralSchemat,UserInterface);
             Population[i] = b;
-            Population[i].name = i+" model";
+            Population[i].Name= Population[i].name = i+" model";
         }
+        NeuralSchemat[0] = Population[0].input.Length;
+        NeuralSchemat[NeuralSchemat.Length-1] = Population[0].OutputBone.Length;
+        //UserInterface.GenerateLayers(NeuralSchemat);
+        //UserInterface.ShowDownLayers();
         UserInterface.GenerationInformation.text = Generation+"\t:Generation";
         UserInterface.PopulationInformation.text = Size+"\t:Population";
         Invoke("Information",0.1f);
         Invoke("NexGen",LifeTime);
     }
+
     private void NexGen()
     {
-        //List<Order> SortedList = objListOrder.OrderBy(o => o.OrderDate).ToList();
+        foreach (var pop in Population)
+        {
+            pop.active = false;
+        }
         Model[] Sorted = Population.OrderBy(p => p.fitnes).ToArray();
         for (int i = 0; i < Sorted.Length; i++)
         {
-            if(i>(Sorted.Length/2))
+            int half = (Sorted.Length / 2);
+            if (i<half)
             {
                 Sorted[i].Mutate(Mutation);
             }else
@@ -77,6 +100,12 @@ public class GenerationManager : MonoBehaviour {
                 Sorted[i].lastMutation = 0;
             }
             Sorted[i].ResetPostion();
+        }
+        Generation++;
+        UserInterface.GenerationInformation.text = Generation + "\t:Generation";
+        foreach (var pop in Population)
+        {
+            pop.active = true;
         }
         Invoke("NexGen", LifeTime);
     }

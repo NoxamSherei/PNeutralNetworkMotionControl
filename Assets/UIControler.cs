@@ -9,9 +9,12 @@ public class UIControler : MonoBehaviour {
     public Text GenerationInformation;
     public Text PopulationInformation;
     public Text PopulationRating;
-	void Start () {
+    public Transform LayerLayout;
+    public UILayer[] Layers;
+    public GameObject PrefabLayer;
+    void Start() {
         Invoke("FPSChecker", 0.01f);
-	}
+    }
 
     private void FPSChecker()
     {
@@ -20,4 +23,22 @@ public class UIControler : MonoBehaviour {
         Invoke("FPSChecker", 0.1f);
     }
 
+    //public void GenerateLayers(int[] layers)
+    //{
+    //    Layers = new UILayer[layers.Length];
+    //    for (int i = 0; i < Layers.Length; i++)
+    //    {
+    //        Layers[i] = Instantiate(PrefabLayer, LayerLayout).GetComponent<UILayer>();
+    //        Layers[i].Initialize(layers[i]);
+    //    }
+    //}
+
+    //public void ShowUpLayers()
+    //{
+    //    LayerLayout.gameObject.SetActive(true);
+    //}
+    //public void ShowDownLayers()
+    //{
+    //    LayerLayout.gameObject.SetActive(false);
+    //}
 }

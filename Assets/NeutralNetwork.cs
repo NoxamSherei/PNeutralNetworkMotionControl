@@ -89,7 +89,7 @@ public class NeutralNetwork : MonoBehaviour {
 
     private float MutateOperation(float v)
     {
-        int los = Random.Range(0, 4);
+        int los = Random.Range(0, 5);
         float procent = 0;
         switch (los)
         {
@@ -109,6 +109,9 @@ public class NeutralNetwork : MonoBehaviour {
             case 4:
                 procent= Random.Range(0f, 100f);
                 v -= v * procent;
+                break;
+            case 5:
+                v = Random.Range(-.5f, .5f);
                 break;
         }
         return v;

@@ -1,43 +1,47 @@
 fileFormatVersion: 2
-guid: db61de48bf81c3f4693b5022d5bb9a6e
-timeCreated: 1514142320
+guid: 52a3ad75fed5cc94ea42f2dc76059eb6
+timeCreated: 1514976363
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Armature
-    100002: Bone
-    100004: Bone_001
-    100006: Bone_002
-    100008: Bone_003
-    100010: Bone_004
-    100012: Bone_005
-    100014: Cube
-    100016: LeftBack
-    100018: LeftFront
-    100020: RIghtBack
-    100022: RightFront
-    100024: Root
-    100026: //RootNode
-    400000: Armature
-    400002: Bone
-    400004: Bone_001
-    400006: Bone_002
-    400008: Bone_003
-    400010: Bone_004
-    400012: Bone_005
-    400014: Cube
-    400016: LeftBack
-    400018: LeftFront
-    400020: RIghtBack
-    400022: RightFront
-    400024: Root
-    400026: //RootNode
+    100000: 1Leg_FL
+    100002: 1Leg_FR
+    100004: 1Leg_SL
+    100006: 1Leg_SR
+    100008: 2Leg_FL
+    100010: 2Leg_FR
+    100012: 2Leg_SL
+    100014: 2Leg_SR
+    100016: Armature
+    100018: Quad
+    100020: //RootNode
+    100022: Root
+    100024: Root_001
+    100026: Root_002
+    100028: Root_003
+    100030: Root_004
+    400000: 1Leg_FL
+    400002: 1Leg_FR
+    400004: 1Leg_SL
+    400006: 1Leg_SR
+    400008: 2Leg_FL
+    400010: 2Leg_FR
+    400012: 2Leg_SL
+    400014: 2Leg_SR
+    400016: Armature
+    400018: Quad
+    400020: //RootNode
+    400022: Root
+    400024: Root_001
+    400026: Root_002
+    400028: Root_003
+    400030: Root_004
     2100000: Material
-    4300000: Cube
+    4300000: Quad
     7400000: Default Take
     9500000: //RootNode
-    13700000: Cube
+    13700000: Quad
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -106,7 +110,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Root
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
