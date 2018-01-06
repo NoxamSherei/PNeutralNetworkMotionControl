@@ -5,12 +5,13 @@ using UnityEngine;
 public class Model : MonoBehaviour
 {
     public float fitnes = 0;
-    private NeutralNetwork neuralNetwork;
+    public NeutralNetwork neuralNetwork;
     public Light point1;
     public string Name;
     public SkinnedMeshRenderer MySkin;
     public GameObject[] OutputBone;
     public GameObject[] InputInformation;
+    public GameObject[] Points;
     public int test;
     private Vector3 LastPos;
     private Vector3[] StartPos;
@@ -28,17 +29,30 @@ public class Model : MonoBehaviour
             StartPos[i] = InputInformation[i].transform.position;
             StartRot[i] = InputInformation[i].transform.localRotation;
         }
-        input = new float[InputInformation.Length + 5 + OutputBone.Length];
+        input = new float[InputInformation.Length + 5 + OutputBone.Length+ Points.Length*3+ InputInformation.Length*3];
         layerShema[0] = input.Length;
         layerShema[layerShema.Length - 1] = OutputBone.Length;
         error= new float[OutputBone.Length];
         neuralNetwork = new NeutralNetwork(layerShema);
+        ChoseColor();
         active = true;
     }
     public float[] input;
     public float[] error;
     private void FixedUpdate()
     {
+
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            string inf="name: "+this.name+"\n";
+            for (int i = 0; i < InputInformation.Length; i++)
+            {
+                inf += i+" Position: " + InputInformation[i].transform.position + " LocalPosition:" + InputInformation[i].transform.localPosition+"\n ";
+            }
+            Debug.Log(inf);
+        }
         if (active)
         {
             //Download Position Rotation Change
@@ -59,6 +73,20 @@ public class Model : MonoBehaviour
             for (int i = 0; i < OutputBone.Length; i++)
             {
                 input[i+ InputInformation.Length] = error[i];
+            }
+            for (int i = 0; i < (Points.Length)*3; i=i+3)
+            {
+
+                input[i + InputInformation.Length + OutputBone.Length] = Points[i/3].transform.position.x - this.transform.position.x;
+                input[i + InputInformation.Length + OutputBone.Length+1] = Points[i/3].transform.position.z - this.transform.position.z;
+                input[i + InputInformation.Length + OutputBone.Length+2] = Points[i/3].transform.position.y - this.transform.position.y;
+            }
+            for (int i = 0; i < (InputInformation.Length) * 3; i = i + 3)
+            {
+
+                input[i + InputInformation.Length + OutputBone.Length+ (Points.Length) * 3] = InputInformation[i/3].transform.position.x - this.transform.position.x;
+                input[i + InputInformation.Length + OutputBone.Length + 1+ (Points.Length) * 3] = InputInformation[i/3].transform.position.z - this.transform.position.z;
+                input[i + InputInformation.Length + OutputBone.Length + 2+ (Points.Length) * 3] = InputInformation[i/3].transform.position.y - this.transform.position.y;
             }
             //Lunch Neural Network
             float[] output = neuralNetwork.FeedForward(input);
@@ -100,15 +128,27 @@ public class Model : MonoBehaviour
             }
         }
     }
+    public void ChoseColor()
+    {
+        Color color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        MySkin.material.color = color;
+    }
+    public void ColorMixer(Color c1, Color c2)
+    {
+        Color color = new Color();
+        color = c1*0.75f + c2*0.25f;
+        MySkin.material.color = color;
+    }
+
 
     public void TestFitnes()
     {
         fitnes = (this.transform.position.z-StartPos[0].z)*10;
-        Color color = MySkin.material.color;
-        color.r = 1 - (fitnes) / 255;
-        color.g = (fitnes) / 255;
-        color.b = (fitnes) / 255;
-        MySkin.material.color = color;
+        //Color color = MySkin.material.color;
+        //color.r = 1 - (fitnes) / 255;
+        //color.g = (fitnes) / 255;
+        //color.b = (fitnes) / 255;
+        //MySkin.material.color = color;
     }
 
     public void Mutate(float chance)

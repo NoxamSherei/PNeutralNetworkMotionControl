@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class NeutralNetwork : MonoBehaviour {
     
@@ -9,6 +8,8 @@ public class NeutralNetwork : MonoBehaviour {
     private float[][][] inputWeight;
     private float[] NeuronInputsDirectConnection;
     private float bias;
+    public int NIDC;
+
 
     public NeutralNetwork(int[] layerSchema)
     {
@@ -16,7 +17,7 @@ public class NeutralNetwork : MonoBehaviour {
         outputs=new float[layerSchema.Length][];
         inputWeight = new float[layerSchema.Length-1][][];
         //Zliczenie Ilości Wejść
-        int NIDC = 0;
+        NIDC = 0;
         for (int i = 1; i < layerSchema.Length; i++)
         {
             NIDC += (layerSchema[i] * layerSchema[i - 1]);
@@ -115,5 +116,49 @@ public class NeutralNetwork : MonoBehaviour {
                 break;
         }
         return v;
+    }
+
+    public void ApplyNewWeights(float[] weights)
+    {
+        int k = 0;
+        for (int i = 0; i < inputWeight.Length; i++)
+        {
+            for (int j = 0; j < inputWeight[i].Length; j++)
+            {
+                for (int n = 0; n < inputWeight[i][j].Length; n++)
+                {
+                    inputWeight[i][j][n]= weights[k];
+                    k++;
+                }
+            }
+        }
+    }
+
+    public void WrtieWeights(int start, int end, ref float[] weights)
+    {
+        int k = start;
+        for (int i = 0; i < inputWeight.Length; i++)
+        {
+            for (int j = 0; j < inputWeight[i].Length; j++)
+            {
+                for (int n = 0; n < inputWeight[i][j].Length; n++)
+                {
+                    weights[k]= inputWeight[i][j][n];
+                    k++;
+                    if(k>end)
+                    {
+                        break;
+                    }
+                }
+                if (k > end)
+                {
+                    break;
+                }
+            }
+            if (k > end)
+            {
+                break;
+            }
+        }
     }
 }

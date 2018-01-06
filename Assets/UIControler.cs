@@ -9,10 +9,20 @@ public class UIControler : MonoBehaviour {
     public Text GenerationInformation;
     public Text PopulationInformation;
     public Text PopulationRating;
+    public Text TimeText;
+    public Text TimeMultiplication;
+    public Text Ratting;
+
+    public Slider TMuiltiplicSlider;
+    public InputField TMuiltiplicField;
     public Transform LayerLayout;
     public UILayer[] Layers;
     public GameObject PrefabLayer;
+    public Text DataText;
+    public GameObject DataPanel;
+
     void Start() {
+        DataPanel.SetActive(false);
         Invoke("FPSChecker", 0.01f);
     }
 
@@ -23,22 +33,5 @@ public class UIControler : MonoBehaviour {
         Invoke("FPSChecker", 0.1f);
     }
 
-    //public void GenerateLayers(int[] layers)
-    //{
-    //    Layers = new UILayer[layers.Length];
-    //    for (int i = 0; i < Layers.Length; i++)
-    //    {
-    //        Layers[i] = Instantiate(PrefabLayer, LayerLayout).GetComponent<UILayer>();
-    //        Layers[i].Initialize(layers[i]);
-    //    }
-    //}
 
-    //public void ShowUpLayers()
-    //{
-    //    LayerLayout.gameObject.SetActive(true);
-    //}
-    //public void ShowDownLayers()
-    //{
-    //    LayerLayout.gameObject.SetActive(false);
-    //}
 }
