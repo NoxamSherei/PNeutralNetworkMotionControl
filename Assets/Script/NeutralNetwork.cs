@@ -1,33 +1,47 @@
 ﻿using UnityEngine;
 
-public class NeutralNetwork : MonoBehaviour {
-    
+public class NeutralNetwork : MonoBehaviour
+{
+
 
     private int[] layers;
     private float[][] outputs;
     private float[][][] inputWeight;
-    private float[] NeuronInputsDirectConnection;
-    private float bias;
-    public int NIDC;
+    private float bias=1;
+    public int NumberOFConnections;
 
+    public int[] Layers
+    {
+        set { layers = value; }
+        get { return layers; }
+    }
+    public float[][][] InputWeight
+    {
+        set { inputWeight = value; }
+        get { return inputWeight; }
+    }
+    public float[][] OutupWeight
+    {
+        set { outputs = value; }
+        get { return outputs; }
+    }
 
     public NeutralNetwork(int[] layerSchema)
     {
-        layers= layerSchema;
-        outputs=new float[layerSchema.Length][];
-        inputWeight = new float[layerSchema.Length-1][][];
-        //Zliczenie Ilości Wejść
-        NIDC = 0;
+        layers = layerSchema;
+        outputs = new float[layerSchema.Length][];
+        inputWeight = new float[layerSchema.Length - 1][][];
+        //zliczanie połączeń
+        NumberOFConnections = 0;
         for (int i = 1; i < layerSchema.Length; i++)
         {
-            NIDC += (layerSchema[i] * layerSchema[i - 1]);
+            NumberOFConnections += (layerSchema[i] * layerSchema[i - 1]);
         }
-        NeuronInputsDirectConnection=new float[NIDC];
         //Inicjalizowanie Wejść i wyjść Neuronowych
         int m = 0;
         for (int i = 0; i < inputWeight.Length; i++)
         {
-            inputWeight[i] = new float[layerSchema[i+1]][];
+            inputWeight[i] = new float[layerSchema[i + 1]][];
             outputs[i] = new float[layerSchema[i]];
             for (int j = 0; j < inputWeight[i].Length; j++)
             {
@@ -35,14 +49,22 @@ public class NeutralNetwork : MonoBehaviour {
                 for (int n = 0; n < inputWeight[i][j].Length; n++)
                 {
                     //Przypisuje wagę neuronu
-                    inputWeight[i][j][n] = Random.Range(-0.5f,0.5f);
-                    NeuronInputsDirectConnection[m] = inputWeight[i][j][n];
+                    inputWeight[i][j][n] = UnityEngine.Random.Range(-0.25f, 0.25f);
                     m++;
                 }
             }
         }
         //Zainicjalizowanie ostateniej warstwy wyjściowej
-        outputs[layerSchema.Length-1] = new float[layerSchema[layerSchema.Length - 1]];
+        outputs[layerSchema.Length - 1] = new float[layerSchema[layerSchema.Length - 1]];
+        bias = 1;
+    }
+
+    public NeutralNetwork(int[] v1, float[][] v2, float[][][] v3,int s1)
+    {
+        layers = v1;
+        outputs = v2;
+        inputWeight = v3;
+        NumberOFConnections = s1;
         bias = 1;
     }
 
@@ -60,11 +82,11 @@ public class NeutralNetwork : MonoBehaviour {
                 }
                 signal += bias;
                 signal = Mathf.Sign(signal);
-                outputs[i+1][j]=signal;
+                outputs[i + 1][j] = signal;
             }
         }
         //Zwracam wartosci na wyjściach neuronowych
-        return outputs[layers.Length-1];
+        return outputs[layers.Length - 1];
     }
 
     public int Mutate(float chance)
@@ -76,7 +98,7 @@ public class NeutralNetwork : MonoBehaviour {
             {
                 for (int n = 0; n < inputWeight[i][j].Length; n++)
                 {
-                    float lotto = Random.Range(0f,100f);
+                    float lotto = UnityEngine.Random.Range(0f, 100f);
                     if (lotto >= (100 - chance))
                     {
                         inputWeight[i][j][n] = MutateOperation(inputWeight[i][j][n]);
@@ -90,7 +112,7 @@ public class NeutralNetwork : MonoBehaviour {
 
     private float MutateOperation(float v)
     {
-        int los = Random.Range(0, 5);
+        int los = UnityEngine.Random.Range(0, 5);
         float procent = 0;
         switch (los)
         {
@@ -98,21 +120,21 @@ public class NeutralNetwork : MonoBehaviour {
                 v = -v;
                 break;
             case 1:
-                v= Random.Range(0f, 1f);
+                v = UnityEngine.Random.Range(0f, 1f);
                 break;
             case 2:
-                v= Random.Range(-1f, 0f);
+                v = UnityEngine.Random.Range(-1f, 0f);
                 break;
             case 3:
-                procent= Random.Range(0f,100f);
+                procent = UnityEngine.Random.Range(0f, 100f);
                 v += v * procent;
                 break;
             case 4:
-                procent= Random.Range(0f, 100f);
+                procent = UnityEngine.Random.Range(0f, 100f);
                 v -= v * procent;
                 break;
             case 5:
-                v = Random.Range(-.5f, .5f);
+                v = UnityEngine.Random.Range(-.25f, .25f);
                 break;
         }
         return v;
@@ -127,7 +149,7 @@ public class NeutralNetwork : MonoBehaviour {
             {
                 for (int n = 0; n < inputWeight[i][j].Length; n++)
                 {
-                    inputWeight[i][j][n]= weights[k];
+                    inputWeight[i][j][n] = weights[k];
                     k++;
                 }
             }
@@ -143,9 +165,9 @@ public class NeutralNetwork : MonoBehaviour {
             {
                 for (int n = 0; n < inputWeight[i][j].Length; n++)
                 {
-                    weights[k]= inputWeight[i][j][n];
+                    weights[k] = inputWeight[i][j][n];
                     k++;
-                    if(k>end)
+                    if (k > end)
                     {
                         break;
                     }
